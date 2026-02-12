@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>¿Quieres ser mi San Valentín?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fuente pixel -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            overflow-x: hidden;
+            background-color: #ffc0cb;
+        }
+
+        /* PRIMERA PANTALLA - Mini juego */
+        #inicio {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            background: url('https://i.pinimg.com/1200x/7d/f9/60/7df9605636217ff878e6ba27654df372.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            overflow: hidden;
+        }
+
+        #inicio h1 {
+            font-size: 28px;
+            margin-top: 20px;
+            text-shadow: 2px 2px #000;
+        }
+
+        #inicio h2 {
+            font-size: 14px;
+            text-shadow: 1px 1px #000;
+        }
+
+        #inicio img {
+            width: 250px;
+            border-radius: 12px;
+            margin-top: 20px;
+            animation: bounce 2s infinite;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Rebote imagen */
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* BOTONES estilo bloque Minecraft */
+        button {
+            padding: 12px 25px;
+            margin: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            border: 3px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 4px 4px 0 #000;
+            transition: transform 0.1s;
+        }
+
+        button:active {
+            transform: translate(2px,2px);
+            box-shadow: 2px 2px 0 #000;
+        }
+
+        #yes { background-color: #ff1493; color: white; }
+        #no { background-color: gray; color: white; }
+        button.back { background-color: black; color: white; box-shadow: 4px 4px 0 #444; }
+
+        /* Partículas pixel */
+        .pixel {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            z-index: 1;
+            opacity: 0.9;
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-400px); opacity: 0; }
+        }
+
+        /* PANTALLA SECUNDARIA */
+        #content {
+            background-color: #ffc0cb;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .love-area {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .float {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes aparecer {
+            from {opacity:0; transform: scale(0.8);}
+            to {opacity:1; transform: scale(1);}
+        }
+
+        .carta {
+            margin-top:20px;
+            background: #ffe4ec;
+            padding:20px;
+            border-radius:20px;
+            width:80%;
+            margin-left:auto;
+            margin-right:auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: aparecer 0.5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- PRIMERA PANTALLA -->
+<div id="inicio">
+    <img src="https://i.pinimg.com/736x/5a/61/67/5a61679c9be8c28ebf9d12eea09a8278.jpg">
+    <h1>¿Quieres ser mi San Valentín?</h1>
+    <h2> advertencia: si marcas "nop", eres gay</h2>
+    <button id="yes">sipi :3</button>
+    <button id="no">nop</button>
+</div>
+
+<!-- PANTALLA SECUNDARIA -->
+<div id="content" style="display:none;"></div>
+
+<script>
+// PARTICULAS PIXEL PRIMERA PANTALLA
+function crearPixel() {
+    const inicio = document.getElementById("inicio");
+    const pixel = document.createElement("div");
+    pixel.classList.add("pixel");
+
+    // Color corazones/rosas tipo pixel
+    const colores = ["#ff0000", "#ff66cc", "#ff99cc", "#ff1493"];
+    pixel.style.backgroundColor = colores[Math.floor(Math.random()*colores.length)];
+
+    pixel.style.left = Math.random() * 95 + "%";
+    pixel.style.bottom = "0px";
+    pixel.style.width = "16px";
+    pixel.style.height = "16px";
+
+    inicio.appendChild(pixel);
+    setTimeout(()=>pixel.remove(), 4000);
+}
+setInterval(crearPixel, 300);
+
+// BOTONES PRIMERA PANTALLA
+const inicioDiv = document.getElementById("inicio");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+
+yesBtn.onclick = function() {
+    inicioDiv.style.display = "none";
+    document.getElementById("content").style.display = "block";
+    mostrarPantallaSipi();
+}
+
+noBtn.onclick = function() {
+    alert("⚠️ Advertencia: si marcaste 'nop', eres gay ");
+    inicioDiv.style.display = "none";
+    document.getElementById("content").style.display = "block";
+    mostrarPantallaNo();
+}
+
+// PANTALLAS SECUNDARIAS
+function mostrarPantallaSipi() {
+    document.getElementById("content").innerHTML = `
+        <h1>Felizzz</h1>
+        <div class="love-area" id="loveArea">
+            <img src="https://i.pinimg.com/originals/37/28/0a/37280aae2e8d379bebadfb53a529ee08.gif">
+            <h1>Te amo muchísimo precioso 💕</h1>
+        </div>
+
+        <div style="margin:20px auto; width:300px;">
+            <iframe style="border-radius:12px" 
+                src="https://open.spotify.com/embed/track/0InIeZW4P6VO7dUGRM4AKH?utm_source=generator" 
+                width="100%" height="80" frameBorder="0" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+            </iframe>
+        </div>
+
+        <button onclick="mostrarCarta()" style="background-color:#ff1493; color:white;">💌 abrir cartita uwu</button>
+        <div id="cartaArea"></div>
+        <br><br>
+        <button class="back" onclick="paginaPrincipal()">volver</button>
+    `;
+    lanzarLove();
+}
+
+function mostrarPantallaNo() {
+    document.getElementById("content").innerHTML = `
+        <h1>QQQQQQ no me quieres? ¿me odias, no? pipipi </h1>
+        <p>GEIIIIIIII </p>
+        <img src="https://i.pinimg.com/originals/31/b3/10/31b310478599fb1a881da221f88ffe49.gif">
+        <br><br>
+        <button class="back" onclick="paginaPrincipal()">regresar</button>
+    `;
+}
+
+// VOLVER
+function paginaPrincipal() {
+    document.getElementById("content").style.display = "none";
+    inicioDiv.style.display = "block";
+}
+
+// PARTICULAS CORAZONES SEGUNDA PANTALLA
+function lanzarLove() {
+    const area = document.getElementById("loveArea");
+    setInterval(() => {
+        const element = document.createElement("div");
+        element.classList.add("float");
+        const items = ["❤️", "💗", "🌹", "💕"];
+        element.innerText = items[Math.floor(Math.random() * items.length)];
+        element.style.left = Math.random() * 80 + "%";
+        element.style.bottom = "0px";
+        area.appendChild(element);
+        setTimeout(() => { element.remove(); }, 4000);
+    }, 400);
+}
+
+// CARTA
+function mostrarCarta() {
+    document.getElementById("cartaArea").innerHTML = `
+        <div class="carta">
+            <h3 style="color:#ff1493;">💗 Para ti 💗</h3>
+            <p>
+                Te quiero mucho mi vida, me alegra haberte conocido aunque no estemos pasando el mejor momento,
+                sabes que te aprecio demasiado. Espero podamos ser más cercanos,
+                muchos besitos, te amo mucho mi chico hermoso muack 💕
+            </p>
+        </div>
+    `;
+}
+</script>
+
+</body>
+</html>
+
+
