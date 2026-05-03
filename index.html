@@ -1,399 +1,331 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>¿Quieres ser mi San Valentín?</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Para solecito</title>
 
-    <!-- Fuente pixel -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background:#ffeef2;
+    overflow:hidden;
+}
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Press Start 2P', cursive;
-            text-align: center;
-            overflow-x: hidden;
-            background-color: #ffc0cb;
-        }
+/* INICIO */
+#inicio{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
 
-        /* PRIMERA PANTALLA - Mini juego */
-        #inicio {
-            width: 100%;
-            height: 100vh;
-            position: relative;
-            background: url('https://i.pinimg.com/1200x/7d/f9/60/7df9605636217ff878e6ba27654df372.jpg') no-repeat center center;
-            background-size: cover;
-            color: white;
-            overflow: hidden;
-        }
+.heart{
+    font-size:120px;
+    cursor:pointer;
+    background: linear-gradient(to top, #ff4d6d 0%, #ff4d6d var(--nivel), #ffccd5 var(--nivel));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-        #inicio h1 {
-            font-size: 28px;
-            margin-top: 20px;
-            text-shadow: 2px 2px #000;
-        }
+/* PANTALLAS */
+.pantalla{
+    display:none;
+    height:100vh;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+}
 
-        #inicio h2 {
-            font-size: 14px;
-            text-shadow: 1px 1px #000;
-        }
+.activa{ display:flex; }
 
-        #inicio img {
-            width: 250px;
-            border-radius: 12px;
-            margin-top: 20px;
-            animation: bounce 2s infinite;
-            z-index: 2;
-            position: relative;
-        }
+/* BURBUJAS */
+.burbuja{
+    position:absolute;
+    bottom:-100px;
+    border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,105,180,0.3));
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.8),
+                0 0 20px rgba(255,105,180,0.4);
+    animation: subir linear infinite;
+}
 
-        /* Rebote imagen */
-        @keyframes bounce {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+@keyframes subir{
+    to{ transform:translateY(-120vh); opacity:0; }
+}
 
-        /* BOTONES estilo bloque Minecraft */
-        button {
-            padding: 12px 25px;
-            margin: 10px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 14px;
-            border: 3px solid #000;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 4px 4px 0 #000;
-            transition: transform 0.1s;
-        }
+/* CARTA */
+.carta{
+    background:linear-gradient(135deg,#fff,#ffe4ec);
+    padding:20px;
+    border-radius:20px;
+    width:260px;
+    color:#ff4d6d;
+    border:2px dashed #ffb3c6;
+}
 
-        button:active {
-            transform: translate(2px,2px);
-            box-shadow: 2px 2px 0 #000;
-        }
+/* CHAT */
+.chat{
+    width:300px;
+    background:white;
+    border-radius:20px;
+    padding:10px;
+}
 
-        #yes { background-color: #ff1493; color: white; }
-        #no { background-color: gray; color: white; }
-        #tutorial { background-color: #ff66cc; color: white; } /* Nuevo botón tutorial */
-        button.back { background-color: black; color: white; box-shadow: 4px 4px 0 #444; }
+.msg{
+    background:#ff6f91;
+    color:white;
+    padding:8px;
+    border-radius:15px;
+    margin:5px;
+    width:fit-content;
+}
 
-        /* Partículas pixel */
-        .pixel {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            z-index: 1;
-            opacity: 0.9;
-            animation: floatUp 4s linear forwards;
-        }
+.typing{
+    color:#888;
+    font-size:0.9em;
+}
 
-        @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-400px); opacity: 0; }
-        }
+/* BOTON */
+button{
+    margin-top:15px;
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#ff6f91;
+    color:white;
+    cursor:pointer;
+}
 
-        /* PANTALLA SECUNDARIA */
-        #content {
-            background-color: #ffc0cb;
-            min-height: 100vh;
-            padding: 20px;
-        }
+/* BOTON NO */
+.no{
+    position:absolute;
+}
 
-        .love-area {
-            position: relative;
-            height: 300px;
-            overflow: hidden;
-        }
+/* IMGS */
+.conejos{ width:200px; border-radius:20px; }
+.gato{ width:140px; }
 
-        .float {
-            position: absolute;
-            font-size: 24px;
-            animation: floatUp 4s linear forwards;
-        }
-
-        @keyframes aparecer {
-            from {opacity:0; transform: scale(0.8);}
-            to {opacity:1; transform: scale(1);}
-        }
-
-        .carta {
-            margin-top:20px;
-            background: #ffe4ec;
-            padding:20px;
-            border-radius:20px;
-            width:80%;
-            margin-left:auto;
-            margin-right:auto;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: aparecer 0.5s ease-in-out;
-        }
-
-        .texto {
-            font-size: 14px;
-            max-width: 600px;
-            margin: 10px auto;
-        }
-
-        iframe {
-            margin: 10px auto;
-            border-radius: 12px;
-            width: 80%;
-            max-width: 400px;
-            height: 80px;
-            display: block;
-        }
-    </style>
+.final{
+    font-size:1.5em;
+    color:#ff4d6d;
+}
+</style>
 </head>
 
 <body>
 
-<!-- PRIMERA PANTALLA -->
+<audio id="sonido" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+
+<!-- INICIO -->
 <div id="inicio">
-    <img src="https://i.pinimg.com/736x/5a/61/67/5a61679c9be8c28ebf9d12eea09a8278.jpg">
-    <h1>¿Quieres ser mi San Valentín?</h1>
-    <h2> advertencia: si marcas "nop", eres gay XD</h2>
-    <button id="yes">sipi :3</button>
-    <button id="no">nop</button>
-    <button id="tutorial">tutorial 💌</button>
+    <h2 style="color:#ff6f91;">Toca el corazón 💖</h2>
+    <div id="heart" class="heart">❤</div>
 </div>
 
-<!-- PANTALLA SECUNDARIA -->
-<div id="content" style="display:none;"></div>
+<!-- BURBUJAS -->
+<div id="p1" class="pantalla">
+    <h2 style="color:#ff6f91;">Entrando a mi mundo contigo </h2>
+    <button onclick="next(2)">Siguienteeee </button>
+</div>
+
+<!-- CONEJOS -->
+<div id="p2" class="pantalla">
+    <img class="conejos" src="https://i.pinimg.com/736x/96/a4/c7/96a4c7601836a5ef751491d95b710f3d.jpg">
+    <div class="carta">
+        Mi solecito <br><br>
+        Eres lo más bonito que tengo, te quiero muchoooo<br><br>
+        eres el mas bonito mi vida, gracias por estar conmigo, muack 
+    </div>
+    <button onclick="next(3)">Siguiente 💌</button>
+</div>
+
+<!-- CHAT -->
+<div id="p3" class="pantalla">
+    <div class="chat" id="chat"></div>
+    <div class="typing" id="typing">escribiendo...</div>
+    <button onclick="next(4)">Siguiente, osiosi </button>
+</div>
+
+<!-- GATO -->
+<div id="p4" class="pantalla">
+    <img class="gato" src="https://i.pinimg.com/originals/e1/43/92/e14392b3bb9f745025a5cf6a9abe11be.gif">
+    <p style="color:#ff4d6d;">yo al ver tu carita preciosa uwu 💖</p>
+    <button onclick="next(5)">Final :c </button>
+</div>
+
+<!-- FINAL -->
+<div id="p5" class="pantalla">
+    <div class="final">
+        💖 <span id="nombre"></span> <br><br>
+        ¿Te quedas conmigo para siempre? 
+    </div>
+
+    <button id="btnSi">Siuuu 💞</button>
+    <button class="no" onmouseover="mover(this)">Nop </button>
+</div>
 
 <script>
-// PARTICULAS PIXEL PRIMERA PANTALLA
-function crearPixel() {
-    const inicio = document.getElementById("inicio");
-    const pixel = document.createElement("div");
-    pixel.classList.add("pixel");
+let nombre = "Ositooo"; // 👉 ositooo
 
-    // Color corazones/rosas tipo pixel
-    const colores = ["#ff0000", "#ff66cc", "#ff99cc", "#ff1493"];
-    pixel.style.backgroundColor = colores[Math.floor(Math.random()*colores.length)];
+/* CORAZON */
+let nivel=0;
+let heart=document.getElementById("heart");
 
-    pixel.style.left = Math.random() * 95 + "%";
-    pixel.style.bottom = "0px";
-    pixel.style.width = "16px";
-    pixel.style.height = "16px";
+heart.onclick=()=>{
+    nivel+=20;
+    heart.style.setProperty('--nivel', nivel+"%");
+    if(nivel>=100){
+        document.getElementById("inicio").style.display="none";
+        next(1);
+        burbujas();
+        iniciarChat();
+    }
+};
 
-    inicio.appendChild(pixel);
-    setTimeout(()=>pixel.remove(), 4000);
-}
-setInterval(crearPixel, 300);
+/* CAMBIO */
+function next(n){
+    document.querySelectorAll(".pantalla").forEach(p=>p.classList.remove("activa"));
+    document.getElementById("p"+n).classList.add("activa");
 
-// BOTONES PRIMERA PANTALLA
-const inicioDiv = document.getElementById("inicio");
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-const tutorialBtn = document.getElementById("tutorial");
-
-yesBtn.onclick = function() {
-    inicioDiv.style.display = "none";
-    document.getElementById("content").style.display = "block";
-    mostrarPantallaSipi();
+    if(n==5){
+        animarNombre();
+    }
 }
 
-noBtn.onclick = function() {
-    alert("⚠️ Advertencia: si eres gay??? ");
-    inicioDiv.style.display = "none";
-    document.getElementById("content").style.display = "block";
-    mostrarPantallaNo();
+/* BURBUJAS */
+function burbujas(){
+    setInterval(()=>{
+        let b=document.createElement("div");
+        b.className="burbuja";
+        let size=20+Math.random()*120;
+        b.style.width=size+"px";
+        b.style.height=size+"px";
+        b.style.left=Math.random()*100+"vw";
+        b.style.animationDuration=(4+Math.random()*4)+"s";
+        document.body.appendChild(b);
+        setTimeout(()=>b.remove(),8000);
+    },80);
 }
 
-// NUEVO: tutorial
-tutorialBtn.onclick = function() {
-    inicioDiv.style.display = "none";
-    document.getElementById("content").style.display = "block";
-    mostrarPantallaTutorial();
+/* CHAT REAL */
+let mensajes=[
+"Holiii ",
+"Estaba pensando en ti ",
+"Y quería decirte algo...",
+"Te quiero muchísimooooo ",
+"Eres el mas hermoso",
+"te extraño",
+"me gusta estar contigo",
+
+];
+
+function iniciarChat(){
+    let chat=document.getElementById("chat");
+    let typing=document.getElementById("typing");
+    let sonido=document.getElementById("sonido");
+    let i=0;
+
+    function escribirMensaje(texto, callback){
+        typing.style.display="block";
+
+        setTimeout(()=>{
+            typing.style.display="none";
+
+            let div=document.createElement("div");
+            div.className="msg";
+            chat.appendChild(div);
+
+            let j=0;
+            function escribir(){
+                if(j<texto.length){
+                    div.innerHTML += texto[j];
+                    j++;
+                    setTimeout(escribir,40);
+                }else{
+                    sonido.play();
+                    setTimeout(callback,900);
+                }
+            }
+            escribir();
+        },1200);
+    }
+
+    function siguiente(){
+        if(i<mensajes.length){
+            escribirMensaje(mensajes[i], ()=>{
+                i++;
+                siguiente();
+            });
+        }
+    }
+
+    siguiente();
 }
 
-// PANTALLAS SECUNDARIAS
-function mostrarPantallaSipi() {
-    document.getElementById("content").innerHTML = `
-        <h1>Felizzz</h1>
-        <div class="love-area" id="loveArea">
-            <img src="https://i.pinimg.com/originals/37/28/0a/37280aae2e8d379bebadfb53a529ee08.gif">
-            <h1>Te amo muchísimo precioso 💕</h1>
-        </div>
+/* NOMBRE ANIMADO */
+function animarNombre(){
+    let cont=document.getElementById("nombre");
+    cont.innerHTML="";
+    let i=0;
 
-        
-            <iframe style="border-radius:12px" 
-                src="https://open.spotify.com/embed/track/0InIeZW4P6VO7dUGRM4AKH?utm_source=generator" 
-                width="100%" height="80" frameBorder="0" 
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-            </iframe>
-        </div>
-
-        <button onclick="mostrarCarta()" style="background-color:#ff1493; color:white;">💌 abrir cartita uwu</button>
-        <div id="cartaArea"></div>
-        <br><br>
-        <button class="back" onclick="paginaPrincipal()">volver</button>
-    `;
-    lanzarLove();
+    function escribir(){
+        if(i<nombre.length){
+            cont.innerHTML+=nombre[i];
+            i++;
+            setTimeout(escribir,120);
+        }
+    }
+    escribir();
 }
 
-function mostrarPantallaNo() {
-    document.getElementById("content").innerHTML = `
-        <h1>QQQQQQ, no me quieres? ¿me odias? pipipi </h1>
-        <p>GEIIIIIIII </p>
-        <img src="https://i.pinimg.com/originals/31/b3/10/31b310478599fb1a881da221f88ffe49.gif">
-        <br><br>
-        <button class="back" onclick="paginaPrincipal()">regresar</button>
-    `;
+/* VIBRAR */
+function vibrar(){
+    if(navigator.vibrate){
+        navigator.vibrate([200,100,200]);
+    }
 }
 
-// NUEVO: Pantalla Tutorial
-function mostrarPantallaTutorial() {
-    document.getElementById("content").innerHTML = `
-        <h1>Soy Ana, Ani y Cherry para los amigues jsjsjs </h1>
+/* EXPLOSION CORAZONES */
+function explosion(){
+    for(let i=0;i<40;i++){
+        let c=document.createElement("div");
+        c.innerHTML="💖";
+        c.style.position="fixed";
+        c.style.left="50%";
+        c.style.top="50%";
+        c.style.fontSize="20px";
 
-        <style>
+        let x=(Math.random()-0.5)*600;
+        let y=(Math.random()-0.5)*600;
 
-.texto-crema{
-    background:linear-gradient(180deg,#fff5e6,#ffe4ec);
-    padding:25px;
-    border-radius:25px;
-    max-width:650px;
-    margin:30px auto;
-    font-size:12px;
-    line-height:1.9;
-    box-shadow:0 10px 25px rgba(255,105,180,0.25);
+        c.style.transition="1s";
+        document.body.appendChild(c);
+
+        setTimeout(()=>{
+            c.style.transform=`translate(${x}px,${y}px)`;
+            c.style.opacity="0";
+        },10);
+
+        setTimeout(()=>c.remove(),1000);
+    }
 }
 
-.texto-crema{
-    background:linear-gradient(180deg,#fff8f2,#ffe6f2);
-    padding:35px;
-    border-radius:35px;
-    max-width:650px;
-    margin:40px auto;
-    font-size:12px;
-    line-height:2;
-    color:#6b4c57;
-    text-align:center;
-    border:3px solid #ffd1e6;
-    box-shadow:0 15px 35px rgba(255,182,193,0.35);
-    position:relative;
-}
+/* BOTON SI */
+document.getElementById("btnSi").onclick=function(){
+    this.innerText="te quiero mucho mucho mucho 💖";
+    vibrar();
+    explosion();
+};
 
-/* decoraciones kawaii */
-.texto-crema::before{
-    content:"🌸  🌸";
-    position:absolute;
-    top:-18px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#fff;
-    padding:5px 15px;
-    border-radius:20px;
-    font-size:12px;
-    box-shadow:0 5px 10px rgba(0,0,0,0.08);
-}
-
-.texto-crema::after{
-    content:"✨";
-    position:absolute;
-    bottom:-15px;
-    right:20px;
-    font-size:18px;
-}
-
-
-</style>
-
-        <div class="texto-crema"> 
-           
-            Suelo ser tímida pero dicen que soy muy vulgar jsjsjsj, odio a los hombres "todos iguales", pero tu corazón,  
-            mi amado chico, eres la excepción. Para mí siempre serás el más lindo,  
-            aunque no lo niego hay veces eres odioso, pero me gustas así tal cual.  
-            Me gustaría que nos podamos conocer mejor.
-    
-        </div>
-        
-         
-        <style>
-
-.lista-bonita{
-    list-style: "❤  ";
-    max-width:650px;
-    margin:20px auto;
-    padding-left:25px;
-    text-align:left;
-    color:#6b4c57;
-    line-height:1.9;
-    font-size:14px;
-}
-
-.lista-bonita li{
-    margin:10px 0;
-}
-
-</style>
-
-          <h2 class="titulo-izq">★ Manual para conocerme mejor:</h2>
-
-<ul class="lista-bonita">
-    <li>Cuando me enojo no digo nada porque quiero que las personas sean adivinas y sepan qué me pasa xd.</li>
-    <li>Según sé amar bonito, pero no sé cómo expresarme.</li>
-    <li>Me gusta que la atención sea solo para mí.</li>
-    <li>Un problema pequeñito lo hago muy grande.</li>
-    <li>Soy muy llorona fácil y mi mamá es esa weona.</li>
-    <li>Soy celosa, pero no lo demuestro.</li>
-    <li>Me gusta que me hablen como bb JAJAJAJ.</li>
-    <li>Se me lengua la traba cuando alguien me gusta.</li>
-    <li>En mi mente tengo muchas cosas por decir pero la pena me gana y no hablo nada.</li>
-    <li>Me gusta hacer pasteles pero cocinar nop.</li>
-    <li>AMO EL ARROZ DE MARISCOS Y LOS TALLARINES VERDES CON MILANESA.</li>
-    <li>Me la paso imaginando escenarios que jamas pasaran pero aun asi eso me agrada.</li>
-</ul>
-
-
-        <h2> ★ Canciones que me recuerdan a ti:</h2>
-        <iframe src="https://open.spotify.com/embed/track/70L6nHORQsblY813yNqUR3?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-        <iframe src="https://open.spotify.com/embed/track/4pwJ6OujVQL3IpCr8KeXIg?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-        <iframe src="https://open.spotify.com/embed/track/3GSMdtJphymHEsR8K9jT5Q?utm_source=generator" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
-        <button class="back" onclick="paginaPrincipal()">volver</button>
-    `;
-}
-
-// VOLVER
-function paginaPrincipal() {
-    document.getElementById("content").style.display = "none";
-    inicioDiv.style.display = "block";
-}
-
-// PARTICULAS CORAZONES SEGUNDA PANTALLA
-function lanzarLove() {
-    const area = document.getElementById("loveArea");
-    setInterval(() => {
-        const element = document.createElement("div");
-        element.classList.add("float");
-        const items = ["❤️", "💗", "🌹", "💕"];
-        element.innerText = items[Math.floor(Math.random() * items.length)];
-        element.style.left = Math.random() * 80 + "%";
-        element.style.bottom = "0px";
-        area.appendChild(element);
-        setTimeout(() => { element.remove(); }, 4000);
-    }, 400);
-}
-
-// CARTA
-function mostrarCarta() {
-    document.getElementById("cartaArea").innerHTML = `
-        <div class="carta">
-            <h3 style="color:#ff1493;">💗 Para ti 💗</h3>
-            <p>
-                Te quiero mucho mi vida, me alegra haberte conocido aunque considero que no estamos pasando el mejor momento de la relacion,
-                sabes que te aprecio demasiado. Espero podamos ser más cercanos,
-                muchos besitos, te amo mucho mi chico hermoso muack 💕
-            </p>
-        </div>
-    `;
+/* BOTON NO */
+function mover(btn){
+    btn.style.top=Math.random()*80+"vh";
+    btn.style.left=Math.random()*80+"vw";
 }
 </script>
 
 </body>
 </html>
-
-
-
